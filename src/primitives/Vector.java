@@ -142,7 +142,29 @@ public class Vector {
         return Objects.hash(_head);
     }
 
+    public Vector normalize() {
 
+        double x = this._head._x._coord;
+        double y = this._head._y._coord;
+        double z = this._head._z._coord;
+
+        double length = this.length();
+
+        if (length == 0)
+            throw new ArithmeticException("divide by Zero");
+
+        this._head._x = new Coordinate(x / length);
+        this._head._y = new Coordinate(y / length);
+        this._head._z = new Coordinate(z / length);
+
+        return this;
+    }
+
+    public Vector normalized() {
+        Vector vector = new Vector(this);
+        vector.normalize();
+        return vector;
+    }
 
     @Override
     public String toString() {
