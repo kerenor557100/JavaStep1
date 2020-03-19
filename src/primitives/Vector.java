@@ -5,6 +5,9 @@ import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 import com.sun.xml.internal.ws.api.model.ExceptionType;
 import java.lang.Math;
 
+import java.nio.charset.CoderResult;
+import java.util.Objects;
+
 import java.util.Objects;
 
 public class Vector {
@@ -70,40 +73,38 @@ public class Vector {
                 this._head.get_y().get()+vec._head.get_y().get(),
                 this._head.get_z().get()+vec._head.get_z().get());
     }
-    public Vector scale(double num){
+    public Vector scale(double scalingFacor) {
         return new Vector(
-                this._head.get_x().get()*num,
-                this._head.get_y().get()*num,
-                this._head.get_z().get()*num);
+                new Point3D(
+                        new Coordinate(scalingFacor * _head._x._coord),
+                        new Coordinate(scalingFacor * _head._y._coord),
+                        new Coordinate(scalingFacor * _head._z._coord)));
     }
 
-    public double dotProduct(Vector other) {
-        return (
-                _head.get_x().get()*other._head.get_x().get()+
-                        _head.get_y().get()*other._head.get_y().get()+
-                        _head.get_z().get()*other._head.get_z().get());
+    public double dotProduct(Vector v) {
+        return (this._head._x._coord * v._head._x._coord +
+                this._head._y._coord * v._head._y._coord +
+                this._head._z._coord * v._head._z._coord);
+    }
+    public Vector crossProduct(Vector v) {
+        double w1 = this._head._y._coord * v._head._z._coord - this._head._z._coord * v._head._y._coord;
+        double w2 = this._head._z._coord * v._head._x._coord - this._head._x._coord * v._head._z._coord;
+        double w3 = this._head._x._coord * v._head._y._coord - this._head._y._coord * v._head._x._coord;
 
+        return new Vector(new Point3D(w1, w2, w3));
+    }
+    public double lengthSquared() {
+        double xx = this._head._x._coord * this._head._x._coord;
+        double yy = this._head._y._coord * this._head._y._coord;
+        double zz = this._head._z._coord * this._head._z._coord;
+
+        return xx + yy + zz;
 
     }
-    public Vector crossProduct(Vector other){
-        return new Vector(new Point3D(  new Coordinate(this._head.get_y().get()*other._head.get_z().get()-this._head.get_z().get()*other._head.get_y().get()),
-                new Coordinate(this._head.get_z().get()*other._head.get_x().get()-this._head.get_x().get()*other._head.get_z().get()),
-                new Coordinate(this._head.get_x().get()*other._head.get_y().get()-this._head.get_y().get()*other._head.get_x().get())));
+    public double length() {
+        return Math.sqrt(lengthSquared());
+    }
 
-
-    }
-    public double lengthSquared()
-    {
-        return (this._head.get_x().get()*this._head.get_x().get()+
-                this._head.get_y().get()*this._head.get_y().get()+
-                this._head.get_z().get()*this._head.get_z().get());
-    }
-    public double length()
-    {
-        return Math.sqrt(this._head.get_x().get()*this._head.get_x().get()+
-                this._head.get_y().get()*this._head.get_y().get()+
-                this._head.get_z().get()*this._head.get_z().get());
-    }
 
     /**
      * get Fun return _head
