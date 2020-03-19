@@ -101,17 +101,12 @@ public class Point3D {
      * @param p2
      * @return
      */
-    public double distanceSquared(Point3D p2) {
-        if (this.equals(p2) == true)
-            return 0.0;
-        else {
-            double dX = (this._x.get() - p2._x.get());
-            double dY = (this._y.get() - p2._y.get());
-            double dZ = (this._z.get() - p2._z.get());
-
-            return ((dX * dX) + (dY * dY) + (dZ * dZ));
-
-        }
+    public double distanceSquared(Point3D other)
+    {
+        return ( (other._x._coord - this._x._coord) * (other._x._coord - this._x._coord) +
+                (other._y._coord - this._y._coord) * (other._y._coord - this._y._coord) +
+                (other._z._coord - this._z._coord) * (other._z._coord - this._z._coord));
+    }
     }
 
     /**
@@ -119,18 +114,8 @@ public class Point3D {
      * @param p2
      * @return
      */
-    public double distance(Point3D p2)
-    {
-        if (this.equals(p2) == true)
-            return 0.0;
-        else {
-            double dX = (this._x.get() - p2._x.get());
-            double dY = (this._y.get() - p2._y.get());
-            double dZ = (this._z.get() - p2._z.get());
-
-            return Math.sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
-
-        }
+    public double distance (Point3D other){
+        return Math.sqrt(distanceSquared(other));
     }
 
     /**
@@ -140,13 +125,11 @@ public class Point3D {
      * @param vertex
      * @return
      */
-    public Point3D add(Vector vec) {
-
-        double dX = (this._x.get() + vec.get_head()._x.get());
-        double dY = (this._y.get() + vec.get_head()._y.get());
-        double dZ = (this._z.get() + vec.get_head()._z.get());
-
-        return new Point3D(new Coordinate(dX),new Coordinate(dY),new Coordinate(dZ));
+    public Point3D add(Vector v) {
+        return new Point3D(this._x._coord + v._head._x._coord,
+                this._y._coord + v._head._y._coord,
+                this._z._coord + v._head._z._coord);
+    }
 
 
     }
