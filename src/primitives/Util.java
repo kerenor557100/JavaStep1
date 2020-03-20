@@ -40,4 +40,5 @@ public abstract class Util {
     public static double alignZero(double number) {
         return getExp(number) < ACCURACY ? 0.0 : number;
     }
+
 }
