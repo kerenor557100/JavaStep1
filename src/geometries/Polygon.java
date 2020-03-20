@@ -1,6 +1,9 @@
 package geometries;
 
+import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Objects;
+
 import primitives.*;
 import static primitives.Util.*;
 
@@ -39,7 +42,8 @@ public class Polygon implements Geometry {
     public Polygon(Point3D... vertices) {
         if (vertices.length < 3)
             throw new IllegalArgumentException("A polygon can't have less than 3 vertices");
-        _vertices = List.of(vertices);
+        for (int i=0;i<vertices.length;i++)
+        {_vertices.add(vertices[i]) ;}// = List.of(vertices);
         // Generate the plane according to the first three vertices and associate the
         // polygon with this plane.
         // The plane holds the invariant normal (orthogonal unit) vector to the polygon
@@ -73,6 +77,25 @@ public class Polygon implements Geometry {
             if (positive != (edge1.crossProduct(edge2).dotProduct(n) > 0))
                 throw new IllegalArgumentException("All vertices must be ordered and the polygon must be convex");
         }
+    }
+
+    /**
+     * equals fun
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Polygon polygon = (Polygon) o;
+        return Objects.equals(_vertices, polygon._vertices) &&
+                Objects.equals(_plane, polygon._plane);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_vertices, _plane);
     }
 
     @Override
